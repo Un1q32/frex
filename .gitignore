@@ -1,0 +1,4 @@
+.clangd
+*.elf
+*.img
+*.o

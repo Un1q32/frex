@@ -1,0 +1,6 @@
+#ifndef _FREX_PERIPHERALS_BASE_H_
+#define _FREX_PERIPHERALS_BASE_H_
+
+#define PBASE 0xFE000000
+
+#endif
