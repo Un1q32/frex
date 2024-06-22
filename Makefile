@@ -24,7 +24,9 @@ release: all
 
 kernel8.img: kernel8.elf
 	@printf " \033[1;35mCP\033[0m kernel8.img\n"
-	$(V)$(OBJCOPY) -O binary $< $@
+	$(V)$(OBJCOPY) -O binary $< kernel8.raw
+	$(V)gzip -nc kernel8.raw > kernel8.img
+	$(V)rm kernel8.raw
 
 kernel8.elf: $(OBJS) src/link.ld
 	@printf " \033[1;34mLD\033[0m kernel8.elf\n"
