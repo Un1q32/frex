@@ -46,4 +46,4 @@ clean:
 
 clangd:
 	@printf "Generating clangd config...\n"
-	$(V)printf 'CompileFlags:\n  Add: [-I$(PWD)/include, --target=aarch64-elf, -std=c99]\n' > .clangd
+	$(V)printf 'CompileFlags:\n  Add: [-I$(PWD)/include, --target=aarch64-elf]\n' > .clangd

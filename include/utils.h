@@ -1,10 +1,11 @@
 #ifndef _FREX_UTILS_H_
 #define _FREX_UTILS_H_
 
-#include <types.h>
+#include <stddef.h>
+#include <stdint.h>
 
-extern void delay(u64);
-extern void put32(size_t, u32);
-extern u32 get32(size_t);
+extern void delay(uint64_t);
+extern void put32(size_t, uint32_t);
+extern uint32_t get32(size_t);
 
 #endif

@@ -14,7 +14,7 @@ typedef enum _GpioFunc {
   GFAlt5 = 2
 } GpioFunc;
 
-extern void gpio_pin_set_func(u8, GpioFunc);
-extern void gpio_pin_enable(u8);
+extern void gpio_pin_set_func(uint8_t, GpioFunc);
+extern void gpio_pin_enable(uint8_t);
 
 #endif
