@@ -1,4 +1,5 @@
 CC = arm-none-eabi-gcc
+AR = llvm-ar
 OBJCOPY = llvm-objcopy
 
 COMPILER_RT_VERSION := 18.1.8
@@ -22,7 +23,8 @@ release: build/kernel.img
 
 build/kernel.elf: $(OBJS)
 	@printf " \033[1;34mLD\033[0m kernel.elf\n"
-	$(V)$(CC) -nostdlib -lgcc -T src/link.ld $(OBJS) -o $@ $(LDFLAGS) $(OPTFLAGS)
+	$(V)$(AR) rcs build/kernel.a $(OBJS)
+	$(V)$(CC) -nostdlib -lgcc -T src/link.ld build/kernel.a -o $@ $(LDFLAGS) $(OPTFLAGS)
 
 build/kernel.img: build/kernel.elf
 	@printf " \033[1;35mOC\033[0m kernel.img\n"

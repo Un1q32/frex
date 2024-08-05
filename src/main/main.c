@@ -3,8 +3,7 @@
 #include <sys/uart.h>
 
 void kernel_main(void) {
-  uart_init();
-  uart_write(-1, "Kernel started\n", 15);
+  uart_write(-1, "Hello, world!\n", 14);
 
   while (1) {
     unsigned char c = uart_getc();

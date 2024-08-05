@@ -34,26 +34,32 @@ typedef struct {
 
 #define getc(a) getc(a)
 
+#define stdin stdin
+#define stdout stdout
+#define stderr stderr
+
 __BEGIN_DECLS
+extern FILE *stdin;
+extern FILE *stdout;
+extern FILE *stderr;
+
 extern FILE *uartin;
 extern FILE *uartout;
 
 extern int fputc(int, FILE *);
 extern int putc(int, FILE *);
+extern int putchar(int);
+extern int puts(const char *);
 extern int fputs(const char *, FILE *);
+extern int printf(const char *, ...);
 extern int fprintf(FILE *, const char *, ...);
-extern int dprintf(int, const char *, ...);
 extern int sprintf(char *, const char *, ...);
 extern int snprintf(char *, size_t, const char *, ...);
+extern int vprintf(const char *, va_list);
 extern int vfprintf(FILE *, const char *, va_list);
-extern int vdprintf(int, const char *, va_list);
 extern int vsprintf(char *, const char *, va_list);
 extern int vsnprintf(char *, size_t, const char *, va_list);
-extern FILE *fopen(const char *, const char *);
-extern FILE *fdopen(int, const char *);
-extern FILE *freopen(const char *, const char *, FILE *);
-extern int fclose(FILE *);
-extern void fcloseall(void);
+extern void perror(const char *);
 extern int fseek(FILE *, long, int);
 extern void rewind(FILE *);
 extern long ftell(FILE *);
@@ -64,6 +70,7 @@ extern int feof(FILE *);
 extern void clearerr(FILE *);
 extern int fgetc(FILE *);
 extern int getc(FILE *);
+extern int getchar(void);
 extern char *fgets(char *, int, FILE *);
 extern size_t fread(void *, size_t, size_t, FILE *);
 extern size_t fwrite(const void *, size_t, size_t, FILE *);

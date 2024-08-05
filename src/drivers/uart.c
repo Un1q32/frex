@@ -1,5 +1,8 @@
 #include <sys/types.h>
 #include <sys/uart.h>
+#include <stdbool.h>
+
+bool uart_initalized = false;
 
 void uart_init(void) {
   write32(UART0_CR, 0x00000000);
@@ -7,6 +10,7 @@ void uart_init(void) {
   write32(UART0_FBRD, 0x3);
   write32(UART0_LCRH, 0x00000070);
   write32(UART0_CR, 0x00000301);
+  uart_initalized = true;
 }
 
 void uart_putc(unsigned char c) {
@@ -23,6 +27,8 @@ unsigned char uart_getc(void) {
 
 ssize_t uart_write(int fd, const void *buf, size_t count) {
   (void)fd;
+  if (!uart_initalized)
+    uart_init();
   const char *cbuf = buf;
   for (size_t i = 0; i < count; i++)
     uart_putc(cbuf[i]);
@@ -31,6 +37,8 @@ ssize_t uart_write(int fd, const void *buf, size_t count) {
 
 ssize_t uart_read(int fd, void *buf, size_t count) {
   (void)fd;
+  if (!uart_initalized)
+    uart_init();
   char *cbuf = buf;
   for (size_t i = 0; i < count; i++)
     cbuf[i] = uart_getc();
