@@ -1,9 +1,11 @@
-CC = clang -target arm-none-eabi
+CC = arm-none-eabi-gcc
 OBJCOPY = llvm-objcopy
+
+COMPILER_RT_VERSION := 18.1.8
 
 CFLAGS = -Wall -Wextra -Wpedantic
 LDFLAGS = -fuse-ld=lld
-OPTFLAGS = -g -mcpu=cortex-a7
+OPTFLAGS = -O0 -g -mcpu=cortex-a7
 
 SRCS = $(wildcard src/*/*.c)
 ASMS = $(wildcard src/*/*.S)
@@ -20,7 +22,7 @@ release: build/kernel.img
 
 build/kernel.elf: $(OBJS)
 	@printf " \033[1;34mLD\033[0m kernel.elf\n"
-	$(V)$(CC) -nostdlib -T src/link.ld $(OBJS) -o $@ $(LDFLAGS) $(OPTFLAGS)
+	$(V)$(CC) -nostdlib -lgcc -T src/link.ld $(OBJS) -o $@ $(LDFLAGS) $(OPTFLAGS)
 
 build/kernel.img: build/kernel.elf
 	@printf " \033[1;35mOC\033[0m kernel.img\n"

@@ -1,3 +1,5 @@
+#include <sys/stdio.h>
+#include <sys/string.h>
 #include <sys/uart.h>
 
 void kernel_main(void) {
