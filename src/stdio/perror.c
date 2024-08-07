@@ -1,6 +1,6 @@
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#include <sys/errno.h>
+#include <sys/stdio.h>
+#include <sys/string.h>
 
 void perror(const char *str) {
   const char *errstr = strerror(errno);
