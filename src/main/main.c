@@ -1,10 +1,8 @@
-#include <stdio.h>
 #include <uart.h>
 
 void kernel_main(void) {
   stdin = uartin;
   stdout = uartout;
-  stderr = uartout;
   puts("Hello, world!");
 
   while (1) {

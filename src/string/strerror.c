@@ -1,5 +1,3 @@
-#include <errno.h>
-
 char *strerror(int errnum) {
   switch (errnum) {
   case 0:

@@ -46,6 +46,12 @@ typedef struct {
 #define BUFSIZ 1024
 #define EOF (-1)
 
+#ifdef __APPLE__
+#define P_tmpdir "/var/tmp"
+#else
+#define P_tmpdir "/tmp"
+#endif
+
 #define stdin stdin
 #define stdout stdout
 #define stderr stderr
@@ -56,9 +62,6 @@ __BEGIN_DECLS
 extern FILE *stdin;
 extern FILE *stdout;
 extern FILE *stderr;
-
-extern FILE *uartin;
-extern FILE *uartout;
 
 extern int fputc(int, FILE *);
 extern int putc(int, FILE *);
@@ -73,6 +76,7 @@ extern int vprintf(const char *, va_list);
 extern int vfprintf(FILE *, const char *, va_list);
 extern int vsprintf(char *, const char *, va_list);
 extern int vsnprintf(char *, size_t, const char *, va_list);
+extern void perror(const char *);
 extern int setvbuf(FILE *, char *, int, size_t);
 extern int setlinebuf(FILE *);
 extern void setbuffer(FILE *, char *, size_t);
@@ -98,6 +102,7 @@ extern int fileno(FILE *);
 extern char *tmpnam(char *);
 extern int sscanf(const char *, const char *, ...);
 extern int vsscanf(const char *, const char *, va_list);
+extern FILE **__open_stream_list;
 __END_DECLS
 
 #endif
