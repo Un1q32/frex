@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 int setvbuf(FILE *stream, char *buf, int mode, size_t size) {
   if (mode != _IONBF && mode != _IOLBF && mode != _IOFBF)
@@ -6,6 +6,7 @@ int setvbuf(FILE *stream, char *buf, int mode, size_t size) {
 
   stream->buf = buf;
   stream->bufsize = size;
+  stream->flags &= ~__SFREEBUF;
   if (mode == _IONBF) {
     stream->flags |= __SNBF;
     stream->flags &= ~__SLBF;

@@ -1,4 +1,4 @@
-#include <sys/errno.h>
+#include <errno.h>
 
 char *strerror(int errnum) {
   switch (errnum) {

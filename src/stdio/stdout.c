@@ -1,3 +1,3 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 FILE *stdout = NULL;

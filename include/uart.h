@@ -1,5 +1,5 @@
-#ifndef _SYS_UART_H_
-#define _SYS_UART_H_
+#ifndef _UART_H_
+#define _UART_H_
 
 #include <stddef.h>
 #include <stdint.h>

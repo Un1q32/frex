@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 int fgetc(FILE *stream) {
   unsigned char c;

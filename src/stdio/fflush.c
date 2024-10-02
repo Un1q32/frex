@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 int fflush(FILE *stream) {
   if (!(stream->flags & __SWR) && !(stream->flags & __SRW))

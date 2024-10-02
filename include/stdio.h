@@ -1,5 +1,5 @@
-#ifndef _SYS_STDIO_H_
-#define _SYS_STDIO_H_
+#ifndef _STDIO_H_
+#define _STDIO_H_
 
 #include <limits.h>
 #include <stdarg.h>
@@ -19,9 +19,14 @@ typedef struct {
   char *buf;
   size_t bufsize;
   size_t bufcount;
+  char uchar;
+  char *ubuf;
+  size_t ubufcount;
+  size_t listpos;
   ssize_t (*read)(int, void *, size_t);
   ssize_t (*write)(int, const void *, size_t);
   off_t (*seek)(int, off_t, int);
+  int (*close)(int);
 } FILE;
 
 #define __SLBF 0x0001
@@ -31,6 +36,8 @@ typedef struct {
 #define __SRW 0x0010
 #define __SEOF 0x0020
 #define __SERR 0x0040
+#define __SFREESTREAM 0x0080
+#define __SFREEBUF 0x0100
 
 #define _IOFBF 0
 #define _IOLBF 1
@@ -81,7 +88,9 @@ extern void clearerr(FILE *);
 extern int fgetc(FILE *);
 extern int getc(FILE *);
 extern int getchar(void);
+extern int ungetc(int, FILE *);
 extern char *fgets(char *, int, FILE *);
+extern char *gets(char *);
 extern size_t fread(void *, size_t, size_t, FILE *);
 extern size_t fwrite(const void *, size_t, size_t, FILE *);
 extern char *ctermid(char *);

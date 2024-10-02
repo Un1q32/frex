@@ -1,6 +1,5 @@
-#include <sys/stdio.h>
-#include <sys/string.h>
-#include <sys/uart.h>
+#include <stdio.h>
+#include <uart.h>
 
 void kernel_main(void) {
   stdin = uartin;

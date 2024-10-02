@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <sys/types.h>
-#include <sys/uart.h>
+#include <uart.h>
 
 bool uart_initalized = false;
 

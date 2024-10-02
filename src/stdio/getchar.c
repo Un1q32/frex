@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 int getchar(void) {
   if (stdin)

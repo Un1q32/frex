@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 int fpurge(FILE *stream) {
   stream->bufcount = 0;

@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 void setbuffer(FILE *stream, char *buf, size_t size) {
   if (size == 0)

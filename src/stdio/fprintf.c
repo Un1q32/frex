@@ -1,4 +1,4 @@
-#include <sys/stdio.h>
+#include <stdio.h>
 
 int fprintf(FILE *stream, const char *format, ...) {
   va_list ap;

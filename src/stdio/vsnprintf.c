@@ -1,9 +1,9 @@
+#include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <sys/errno.h>
-#include <sys/string.h>
+#include <string.h>
 
 static char *__utoa(unsigned long long num, char *buf, unsigned char base,
                     bool upper) {
