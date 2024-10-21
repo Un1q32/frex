@@ -1,4 +1,4 @@
-CC = clang -target armv7-none-eabihf -mcpu=cortex-a7 -mfpu=neon-vfpv4
+CC = clang -target armv7-none-eabihf
 AR = llvm-ar
 OBJCOPY = llvm-objcopy
 
@@ -49,6 +49,6 @@ debug: build/kernel.elf
 
 clangd:
 	@printf "Generating clangd config...\n"
-	$(V)printf 'CompileFlags:\n  Add: [-I$(PWD)/include, --target=armv7-none-eabihf, -mfpu=neon-vfpv4, -ffreestanding]\n' > .clangd
+	$(V)printf 'CompileFlags:\n  Add: [-I$(PWD)/include, --target=armv7-none-eabihf, -ffreestanding]\n' > .clangd
 
 .PHONY: all clean run debug
