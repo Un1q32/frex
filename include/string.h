@@ -9,6 +9,7 @@ __BEGIN_DECLS
 extern char *strcat(char *, const char *);
 extern char *strcpy(char *, const char *);
 extern size_t strlen(const char *);
+extern void *memcpy(void *, const void *, size_t);
 extern char *strerror(int);
 __END_DECLS
 

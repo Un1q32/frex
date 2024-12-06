@@ -29,11 +29,11 @@ build/kernel.img: build/kernel.elf
 
 %.o: %.c $(HEADERS)
 	@src=$@; src=$${src##*/}; printf " \033[1;32mCC\033[0m %s\n" "$$src"
-	$(V)$(CC) -Iinclude -ffreestanding -fpic -std=c99 $(CFLAGS) $(OPTFLAGS) -c $< -o $@
+	$(V)$(CC) -Iinclude -D__UNIQLIBC_PRIVATE_API -ffreestanding -fpic -std=c99 $(CFLAGS) $(OPTFLAGS) -c $< -o $@
 
 $(ASMS:.S=.o): %.o: %.S $(HEADERS)
 	@src=$@; src=$${src##*/}; printf " \033[1;33mAS\033[0m %s\n" "$$src"
-	$(V)$(CC) -Iinclude $(ASFLAGS) $(OPTFLAGS) -c $< -o $@
+	$(V)$(CC) -Iinclude -D__UNIQLIBC_PRIVATE_API $(ASFLAGS) $(OPTFLAGS) -c $< -o $@
 
 clean:
 	@printf "Cleaning up...\n"
@@ -49,6 +49,6 @@ debug: build/kernel.elf
 
 clangd:
 	@printf "Generating clangd config...\n"
-	$(V)printf 'CompileFlags:\n  Add: [-I$(PWD)/include, --target=armv7-none-eabihf, -ffreestanding]\n' > .clangd
+	$(V)printf 'CompileFlags:\n  Add: [-I$(PWD)/include, -D__UNIQLIBC_PRIVATE_API, --target=armv7-none-eabihf, -ffreestanding]\n' > .clangd
 
 .PHONY: all clean run debug

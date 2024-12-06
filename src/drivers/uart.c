@@ -42,7 +42,11 @@ ssize_t uart_read(int fd, void *buf, size_t count) {
   if (!uart_initalized)
     uart_init();
   char *cbuf = buf;
-  for (size_t i = 0; i < count; i++)
-    cbuf[i] = uart_getc();
+  for (size_t i = 0; i < count; i++) {
+    unsigned char c = uart_getc();
+    cbuf[i] = c;
+    if (c == '\n')
+      break;
+  }
   return count;
 }

@@ -13,14 +13,17 @@
 
 #define FILENAME_MAX PATH_MAX
 
+#ifdef __UNIQLIBC_PRIVATE_API
 typedef struct {
   char uchar;
   short flags;
   int fd;
   char *buf;
+  char *rbuf;
+  char *ubuf;
   size_t bufsize;
   size_t bufcount;
-  char *ubuf;
+  size_t rbufcount;
   size_t ubufcount;
   size_t listpos;
   ssize_t (*read)(int, void *, size_t);
@@ -28,16 +31,11 @@ typedef struct {
   off_t (*seek)(int, off_t, int);
   int (*close)(int);
 } FILE;
-
-#define __SLBF 0x0001
-#define __SNBF 0x0002
-#define __SRD 0x0004
-#define __SWR 0x0008
-#define __SRW 0x0010
-#define __SEOF 0x0020
-#define __SERR 0x0040
-#define __SFREESTREAM 0x0080
-#define __SFREEBUF 0x0100
+#else
+typedef struct {
+  char __x;
+} FILE;
+#endif
 
 #define _IOFBF 0
 #define _IOLBF 1
@@ -57,6 +55,19 @@ typedef struct {
 #define stderr stderr
 
 #define getc(a) getc(a)
+
+#ifdef __UNIQLIBC_PRIVATE_API
+#define __SLBF 0x0001
+#define __SNBF 0x0002
+#define __SRD 0x0004
+#define __SWR 0x0008
+#define __SRW 0x0010
+#define __SEOF 0x0020
+#define __SERR 0x0040
+#define __SFREESTREAM 0x0080
+#define __SFREEBUF 0x0100
+#define __SFREERBUF 0x0200
+#endif
 
 __BEGIN_DECLS
 extern FILE *stdin;
@@ -102,7 +113,10 @@ extern int fileno(FILE *);
 extern char *tmpnam(char *);
 extern int sscanf(const char *, const char *, ...);
 extern int vsscanf(const char *, const char *, va_list);
+
+#ifdef __UNIQLIBC_PRIVATE_API
 extern FILE **__open_stream_list;
+#endif
 __END_DECLS
 
 #endif
