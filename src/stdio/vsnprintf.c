@@ -5,6 +5,10 @@
 #include <stdint.h>
 #include <string.h>
 
+/*
+ * Convert num to a string using base
+ * base can be any number from 2 to 16
+ */
 static char *__utoa(uintmax_t num, char *buf, unsigned char base, bool upper) {
   char *chars;
   if (upper)
@@ -28,18 +32,19 @@ static char *__ftoa(long double num, unsigned int precision, char *buf,
     return "inf";
   else if (num == -1.0 / 0.0)
     return "-inf";
-  buf[0] = '0';
-  char *p = buf + 1;
+  char *p = buf;
+  *p++ = '0'; /* 1 extra byte in case we need it when rounding up */
   if (num < 0) {
     *p++ = '-';
     num = -num;
   }
-  /* Extract every digit from the int part */
-  long double num2 = num;
+  /* Compute 10 ^ intlen */
   size_t intlen2 = intlen;
   long double digitmul = 1;
   while (--intlen2)
     digitmul *= 10;
+  /* Extract every digit from the int part */
+  long double num2 = num;
   while (intlen--) {
     intlen2 = intlen;
     num2 = num;
@@ -49,6 +54,7 @@ static char *__ftoa(long double num, unsigned int precision, char *buf,
     num -= (signed char)num2 * digitmul;
     digitmul /= 10;
   }
+  /* Extract precision digits from the decimal part */
   if (precision) {
     *p++ = '.';
     while (precision--) {
@@ -57,8 +63,9 @@ static char *__ftoa(long double num, unsigned int precision, char *buf,
       num -= (signed char)num;
     }
   }
+  /* Round up if needed */
   num *= 10;
-  if ((int)num >= 5) {
+  if ((signed char)num >= 5) {
     char *q = p - 1;
     while (*q == '9' || *q == '.') {
       if (*q == '.')
@@ -66,9 +73,12 @@ static char *__ftoa(long double num, unsigned int precision, char *buf,
       else
         *q-- = '0';
     }
-    if (q == buf)
+    if (q == buf) /* 9 rounding up to 10 */
       *q = '1';
-    else
+    else if (*q == '-') { /* -9 rounding down to -10 */
+      *q = '1';
+      *--q = '-';
+    } else /* Everything else */
       ++*q;
   }
   *p = '\0';
