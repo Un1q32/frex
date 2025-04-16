@@ -29,17 +29,29 @@ size_t fread(void *restrict ptr, size_t size, size_t nmemb,
   }
   ssize_t readret = 0;
   char buf[BUFSIZ];
-  while (total_size > 0 &&
-         (readret = stream->read(stream->fd, buf, BUFSIZ)) > 0) {
-    size_t i = 0;
-    while (total_size > 0 && readret > 0) {
-      *cptr++ = buf[i++];
-      --readret;
-      --total_size;
-    }
+  while (total_size > 0) {
+    readret = stream->read(stream->fd, buf, BUFSIZ);
     if (readret > 0) {
-      memcpy(stream->rbuf, buf + i, readret);
-      stream->rbufcount = readret;
+      if ((size_t)readret > total_size) {
+        memcpy(cptr, buf, total_size);
+        memcpy(stream->rbuf, buf + total_size, readret - total_size);
+        stream->rbufcount = readret - total_size;
+        break;
+      } else {
+        memcpy(cptr, buf, readret);
+        total_size -= readret;
+        if (readret < BUFSIZ) {
+          stream->flags |= __SEOF;
+          break;
+        } else
+          cptr += readret;
+      }
+    } else if (readret == 0) {
+      stream->flags |= __SEOF;
+      break;
+    } else {
+      stream->flags |= __SERR;
+      break;
     }
   }
   return ts - total_size;
