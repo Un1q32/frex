@@ -3,7 +3,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <sys/cdefs.h>
 #include <sys/types.h>
 
@@ -25,9 +24,6 @@ static inline uint32_t read32(size_t reg) { return *(volatile uint32_t *)reg; }
 #define UART0_ICR (UART0_BASE + 0x44)
 
 __BEGIN_DECLS
-extern FILE *uartin;
-extern FILE *uartout;
-
 extern void uart_init(void);
 extern void uart_putc(unsigned char);
 extern unsigned char uart_getc(void);

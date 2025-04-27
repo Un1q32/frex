@@ -1,9 +1,8 @@
-CC = clang -target armv7-none-eabihf
-AR = llvm-ar
-OBJCOPY = llvm-objcopy
+CC = arm-none-eabi-gcc -mcpu=cortex-a7
+AR = arm-none-eabi-ar
+OBJCOPY = arm-none-eabi-objcopy
 
-CFLAGS = -Wall -Wextra -Wpedantic
-LDFLAGS = -fuse-ld=lld
+CFLAGS = -Wall -Wextra -pedantic
 OPTFLAGS = -O0 -g
 
 SRCS = $(wildcard src/*/*.c)
@@ -21,7 +20,7 @@ release: build/kernel.img
 
 build/kernel.elf: $(OBJS) src/link.ld
 	@printf " \033[1;34mLD\033[0m kernel.elf\n"
-	$(V)$(CC) -nostdlib -T src/link.ld $(OBJS) -lclang_rt.builtins -o $@ $(LDFLAGS) $(OPTFLAGS)
+	$(V)$(CC) -nostdlib -T src/link.ld $(OBJS) -lgcc -o $@ $(LDFLAGS) $(OPTFLAGS)
 
 build/kernel.img: build/kernel.elf
 	@printf " \033[1;35mOC\033[0m kernel.img\n"
@@ -41,7 +40,7 @@ clean:
 
 run: build/kernel.elf
 	@printf "Running with QEMU...\n"
-	$(V)qemu-system-aarch64 -M raspi2b -kernel $< -serial stdio
+	$(V)qemu-system-arm -M raspi2b -kernel $< -serial stdio
 
 debug: build/kernel.elf
 	@printf "Running with QEMU in debug mode...\n"

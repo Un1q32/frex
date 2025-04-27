@@ -15,13 +15,14 @@ int fflush(FILE *stream) {
     fflush(stderr);
     return 0;
   }
-  if (!(stream->flags & __SWR) && !(stream->flags & __SRW))
-    return 0;
-  if (stream->write && stream->bufcount > 0) {
+  if (stream->write) {
+    if (!stream->bufcount)
+      return 0;
     ssize_t writeret = stream->write(stream->fd, stream->buf, stream->bufcount);
-    if (writeret == -1)
+    if (writeret == -1 || (size_t)writeret != stream->bufcount) {
+      stream->flags |= __SERR;
       return EOF;
-    else
+    } else
       stream->bufcount = 0;
   }
   return 0;
