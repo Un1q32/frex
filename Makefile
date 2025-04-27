@@ -55,7 +55,7 @@ run: build/kernel.elf
 
 debug: build/kernel.elf
 	@printf "Running with QEMU in debug mode...\n"
-	$(V)qemu-system-aarch64 -M raspi2b -kernel $< -serial stdio -s -S
+	$(V)qemu-system-arm -M raspi2b -kernel $< -serial stdio -s -S
 
 clangd:
 	@printf "Generating clangd config...\n"
