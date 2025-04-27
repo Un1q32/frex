@@ -1,3 +1,4 @@
 *.o
 .clangd
 .DS_Store
+/compiler-rt

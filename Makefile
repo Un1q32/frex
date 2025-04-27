@@ -1,12 +1,14 @@
-CC = arm-none-eabi-gcc -mcpu=cortex-a7
-AR = arm-none-eabi-ar
-OBJCOPY = arm-none-eabi-objcopy
+CC = clang -target arm-none-eabihf -mcpu=cortex-a7
+AR = llvm-ar
+OBJCOPY = llvm-objcopy
+
+COMPILER_RT_VERSION := 20.1.3
 
 CFLAGS = -Wall -Wextra -pedantic
 OPTFLAGS = -O0 -g
 
-SRCS = $(wildcard src/*/*.c)
-ASMS = $(wildcard src/*/*.S)
+SRCS = $(wildcard src/*/*.c) compiler-rt/lib/builtins/udivmoddi4.c
+ASMS = $(wildcard src/*/*.S) compiler-rt/lib/builtins/arm/aeabi_uldivmod.S
 OBJS = $(SRCS:.c=.o) $(ASMS:.S=.o)
 
 ifndef VERBOSE
@@ -20,23 +22,32 @@ release: build/kernel.img
 
 build/kernel.elf: $(OBJS) src/link.ld
 	@printf " \033[1;34mLD\033[0m kernel.elf\n"
-	$(V)$(CC) -nostdlib -T src/link.ld $(OBJS) -lgcc -o $@ $(LDFLAGS) $(OPTFLAGS)
+	$(V)$(CC) -nostdlib -T src/link.ld $(OBJS) -o $@ $(LDFLAGS) $(OPTFLAGS)
 
 build/kernel.img: build/kernel.elf
 	@printf " \033[1;35mOC\033[0m kernel.img\n"
 	$(V)$(OBJCOPY) -O binary $< $@
 
-%.o: %.c $(HEADERS)
+%.o: %.c $(HEADERS) compiler-rt
 	@src=$@; src=$${src##*/}; printf " \033[1;32mCC\033[0m %s\n" "$$src"
 	$(V)$(CC) -Iinclude -D__UNIQLIBC_PRIVATE_API -ffreestanding -fpic -std=c99 $(CFLAGS) $(OPTFLAGS) -c $< -o $@
 
-$(ASMS:.S=.o): %.o: %.S $(HEADERS)
+$(ASMS:.S=.o): %.o: %.S $(HEADERS) compiler-rt
 	@src=$@; src=$${src##*/}; printf " \033[1;33mAS\033[0m %s\n" "$$src"
 	$(V)$(CC) -Iinclude -D__UNIQLIBC_PRIVATE_API $(ASFLAGS) $(OPTFLAGS) -c $< -o $@
 
 clean:
 	@printf "Cleaning up...\n"
 	$(V)rm -rf build/* src/*/*.o
+
+distclean: clean
+	$(V)rm -rf compiler-rt .clangd
+
+compiler-rt:
+	@printf "Downloading compiler-rt...\n"
+	$(V)rm -rf compiler-rt
+	$(V)curl -# -L https://github.com/llvm/llvm-project/releases/download/llvmorg-$(COMPILER_RT_VERSION)/compiler-rt-$(COMPILER_RT_VERSION).src.tar.xz | xz -d | tar -x
+	$(V)mv compiler-rt-$(COMPILER_RT_VERSION).src compiler-rt
 
 run: build/kernel.elf
 	@printf "Running with QEMU...\n"
