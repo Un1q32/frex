@@ -10,17 +10,17 @@
 
 #ifdef __UNIQLIBC_PRIVATE_API
 typedef struct {
-  char uchar;       /* first character pushed back with ungetc */
-  uint8_t flags;    /* flags to store things like buffer type */
-  int fd;           /* file descriptor */
-  char *buf;        /* write buffer */
-  char *rbuf;       /* read buffer */
-  char *ubuf;       /* ungetc buffer */
-  size_t bufsize;   /* write buffer size */
-  size_t bufcount;  /* amount of bytes in write buffer */
-  size_t rbufcount; /* amount of bytes in read buffer */
-  size_t ubufcount; /* amount of bytes in ungetc buffer */
-  size_t listpos;   /* position in __open_stream_list */
+  char ungetcchar;       /* first character pushed back with ungetc */
+  uint8_t flags;         /* flags to store things like buffer type */
+  int fd;                /* file descriptor */
+  char *writebuf;        /* write buffer */
+  char *readbuf;         /* read buffer */
+  char *ungetcbuf;       /* ungetc buffer */
+  size_t writebufsize;   /* write buffer size */
+  size_t writebufcount;  /* amount of bytes in write buffer */
+  size_t readbufcount;   /* amount of bytes in read buffer */
+  size_t ungetcbufcount; /* amount of bytes in ungetc buffer */
+  size_t listpos;        /* position in __open_stream_list */
   /* read, write, seek, and close functions to use */
   ssize_t (*read)(int, void *, size_t);
   ssize_t (*write)(int, const void *, size_t);
@@ -53,13 +53,15 @@ typedef struct {
 #define getc(a) getc(a)
 
 #ifdef __UNIQLIBC_PRIVATE_API
-#define __SLBF 0x01
-#define __SNBF 0x02
-#define __SEOF 0x04
-#define __SERR 0x08
-#define __SFREESTREAM 0x10
-#define __SFREEBUF 0x20
-#define __SFREERBUF 0x40
+/* FILE stream flags */
+#define __STDIO_LINEBUFFERED 0x01 /* stream is line buffered */
+#define __STDIO_UNBUFFERED 0x02   /* stream is unbuffered */
+#define __STDIO_EOF 0x04          /* stream has EOF flag set */
+#define __STDIO_ERROR 0x08        /* stream has error flag set */
+/* stream, write buffer, or read buffer were allocaed with malloc */
+#define __STDIO_MALLOCED_STREAM 0x10
+#define __STDIO_MALLOCED_WRITEBUF 0x20
+#define __STDIO_MALLOCED_READBUF 0x40
 #endif
 
 __BEGIN_DECLS

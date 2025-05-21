@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int ungetc(int c, FILE *stream) {
-  stream->uchar = c;
-  stream->ubufcount = 1;
+  stream->ungetcchar = c;
+  stream->ungetcbufcount = 1;
   return c;
 }
