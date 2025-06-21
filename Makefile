@@ -2,7 +2,7 @@ CC = clang -target arm-none-eabihf -mcpu=cortex-a7
 AR = llvm-ar
 OBJCOPY = llvm-objcopy
 
-COMPILER_RT_VERSION := 20.1.4
+COMPILER_RT_VERSION := 20.1.7
 
 CFLAGS = -Wall -Wextra -pedantic
 OPTFLAGS = -O0 -g
