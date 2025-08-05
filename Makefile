@@ -2,7 +2,7 @@ CC = clang -target arm-none-eabihf -mcpu=cortex-a7
 AR = llvm-ar
 OBJCOPY = llvm-objcopy
 
-COMPILER_RT_VERSION := 20.1.7
+COMPILER_RT_VERSION := 20.1.8
 
 CFLAGS = -Wall -Wextra -pedantic
 OPTFLAGS = -O0 -g
@@ -17,7 +17,7 @@ endif
 
 all: build/kernel.img
 
-release: OPTFLAGS = -O3
+release: OPTFLAGS = -O2
 release: build/kernel.img
 
 build/kernel.elf: $(OBJS) src/link.ld

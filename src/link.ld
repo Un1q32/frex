@@ -29,5 +29,12 @@ SECTIONS
     }
     __bss_end = .;
 
+    . = ALIGN(0x1000);
+    __heap_start = .;
+    __heap_size = 0x4000000;
+    . = __heap_start + __heap_size;
+    __heap_end = .;
+
+
     __end = .;
 }

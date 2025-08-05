@@ -3,6 +3,7 @@
 
 void kernel_main(void) {
   puts("Hello, world!");
+  printf("uart_getc() function: %p\n", uart_getc);
 
   while (1) {
     unsigned char c = uart_getc();
